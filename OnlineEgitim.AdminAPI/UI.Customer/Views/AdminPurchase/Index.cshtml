@@ -1,0 +1,45 @@
+﻿@model List<UI.Customer.ViewModel.PurchasedCourseViewModel>
+
+<h2 class="mb-4">💳 Satın Alınan Kurslar</h2>
+
+@if (Model == null || !Model.Any())
+{
+    <div class="alert alert-info">Henüz satın alınan kurs bulunmamaktadır.</div>
+}
+else
+{
+    <div class="row">
+        @foreach (var purchase in Model)
+        {
+            <div class="col-md-4 mb-3">
+                <div class="card h-100 shadow-sm">
+
+                    <!-- 🖼️ Kurs resmi -->
+                    @if (!string.IsNullOrEmpty(purchase.ImagePath))
+                    {
+                        <img src="@purchase.ImagePath"
+                             class="card-img-top" alt="Kurs Görseli" />
+                    }
+                    else
+                    {
+                        <img src="https://picsum.photos/300/200?random=@Guid.NewGuid()"
+                             class="card-img-top" alt="Kurs Görseli" />
+                    }
+
+                    <div class="card-body">
+                        <h5 class="card-title">@purchase.CourseTitle</h5>
+                        <p><strong>@purchase.CoursePrice ₺</strong></p>
+                        <p class="text-muted">
+                            Satın Alma Tarihi: @purchase.PurchaseDate.ToString("dd.MM.yyyy")
+                        </p>
+                        <p>
+                            <small class="text-secondary">
+                                👤 @purchase.UserName - @purchase.UserEmail
+                            </small>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}

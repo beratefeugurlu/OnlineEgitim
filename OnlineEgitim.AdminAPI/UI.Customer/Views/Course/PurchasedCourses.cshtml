@@ -1,0 +1,47 @@
+﻿@using UI.Customer.ViewModel
+@model List<PurchasedCourseViewModel>
+
+
+
+@{
+    ViewData["Title"] = "Satın Alınan Kurslar";
+}
+
+<div class="container mt-4">
+    <h2 class="mb-4">📚 Satın Alınan Kurslar</h2>
+
+    @if (ViewBag.Error != null)
+    {
+        <div class="alert alert-danger">@ViewBag.Error</div>
+    }
+    else if (!Model.Any())
+    {
+        <div class="alert alert-info">Henüz satın alınmış kurs yok.</div>
+    }
+    else
+    {
+        <table class="table table-striped table-bordered">
+            <thead class="table-dark">
+                <tr>
+                    <th>Kullanıcı Adı</th>
+                    <th>Email</th>
+                    <th>Kurs Adı</th>
+                    <th>Fiyat</th>
+                    <th>Satın Alma Tarihi</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.UserName</td>
+                        <td>@item.UserEmail</td>
+                        <td>@item.CourseTitle</td>
+                        <td>@item.CoursePrice ₺</td>
+                        <td>@item.PurchaseDate</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>

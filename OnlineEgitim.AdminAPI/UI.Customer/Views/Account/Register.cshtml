@@ -1,0 +1,56 @@
+﻿@{
+    ViewData["Title"] = "Kayıt Ol";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h3 class="text-center text-success mb-4">📝 EduTube - Kayıt Ol</h3>
+
+                    @* ✅ TempData mesajları *@
+                    @if (TempData["Success"] != null)
+                    {
+                        <div class="alert alert-success">@TempData["Success"]</div>
+                    }
+                    @if (TempData["Error"] != null)
+                    {
+                        <div class="alert alert-danger">@TempData["Error"]</div>
+                    }
+
+                    @* ✅ ModelState hataları *@
+                    @if (!ViewData.ModelState.IsValid)
+                    {
+                        foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                        {
+                            <div class="alert alert-danger">@error.ErrorMessage</div>
+                        }
+                    }
+
+                    <form asp-action="Register" method="post">
+                        <div class="mb-3">
+                            <label class="form-label">Ad Soyad</label>
+                            <input type="text" name="name" class="form-control" placeholder="Adınız Soyadınız" required />
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">E-Posta</label>
+                            <input type="email" name="email" class="form-control" placeholder="ornek@mail.com" required />
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Şifre</label>
+                            <input type="password" name="password" class="form-control" placeholder="••••••" required />
+                        </div>
+
+                        <button type="submit" class="btn btn-success w-100">Kayıt Ol</button>
+                    </form>
+
+                    <hr />
+                    <p class="text-center">Zaten hesabın var mı? <a href="/Account/Login">Giriş Yap</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

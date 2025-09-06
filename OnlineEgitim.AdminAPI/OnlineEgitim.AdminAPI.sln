@@ -1,0 +1,42 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36301.6
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineEgitim.AdminAPI", "OnlineEgitim.AdminAPI\OnlineEgitim.AdminAPI.csproj", "{6061D4E2-67D3-44C2-BB79-E7C64FFA5542}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UI.Admin", "UI.Admin\UI.Admin.csproj", "{EDC6FF5D-1BDF-4812-B440-48A03DECBA79}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UI.Customer", "UI.Customer\UI.Customer.csproj", "{3DD3FE80-1783-4A87-A98A-6DF0E1144FDC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Çözüm Öğeleri", "Çözüm Öğeleri", "{AC80F682-3D55-C8F8-4895-A4A9EDD49434}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6061D4E2-67D3-44C2-BB79-E7C64FFA5542}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6061D4E2-67D3-44C2-BB79-E7C64FFA5542}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6061D4E2-67D3-44C2-BB79-E7C64FFA5542}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6061D4E2-67D3-44C2-BB79-E7C64FFA5542}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EDC6FF5D-1BDF-4812-B440-48A03DECBA79}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EDC6FF5D-1BDF-4812-B440-48A03DECBA79}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EDC6FF5D-1BDF-4812-B440-48A03DECBA79}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EDC6FF5D-1BDF-4812-B440-48A03DECBA79}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3DD3FE80-1783-4A87-A98A-6DF0E1144FDC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3DD3FE80-1783-4A87-A98A-6DF0E1144FDC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3DD3FE80-1783-4A87-A98A-6DF0E1144FDC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3DD3FE80-1783-4A87-A98A-6DF0E1144FDC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {50E8E921-94C9-42BE-AB20-6C00FA993BC6}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,143 @@
+﻿@model List<UI.Customer.Models.Course>
+
+<h2 class="mb-4 text-center fw-bold">📚 Tüm Kurslar</h2>
+
+<!-- 🔍 Arama & Filtreleme Alanı -->
+<div class="mb-4 d-flex justify-content-center sticky-top bg-light py-3 shadow-sm rounded">
+    <input type="text" id="searchBox" class="form-control w-25 me-2" placeholder="🔍 Kurs ara...">
+    <select id="sortSelect" class="form-select w-25 me-2">
+        <option value="">📊 Sıralama Seç</option>
+        <option value="asc">Fiyat (En Ucuz → En Pahalı)</option>
+        <option value="desc">Fiyat (En Pahalı → En Ucuz)</option>
+    </select>
+    <select id="categorySelect" class="form-select w-25">
+        <option value="">🏷️ Kategori Seç</option>
+        @foreach (var kategori in Model
+                    .Select(c => c.Description ?? string.Empty)
+                    .Where(c => !string.IsNullOrWhiteSpace(c))
+                    .Distinct())
+        {
+            <option value="@kategori">@kategori</option>
+        }
+    </select>
+</div>
+
+<!-- 📦 Kurs Listesi -->
+<div class="row" id="courseList">
+    @foreach (var course in Model)
+    {
+        <div class="col-md-4 mb-4 course-card"
+             data-title="@course.Title.ToLower()"
+             data-price="@course.Price"
+             data-category="@(course.Description ?? string.Empty)">
+            <div class="card h-100 shadow-sm border-0">
+
+                <!-- 🖼️ Kurs Görseli -->
+                <div class="position-relative">
+                    <img src="@(!string.IsNullOrEmpty(course.ImagePath) ? course.ImagePath : $"https://picsum.photos/600/400?random={Guid.NewGuid()}")"
+                         class="card-img-top rounded-top" alt="Kurs Görseli" style="height:220px; object-fit:cover;">
+                    <span class="position-absolute bottom-0 start-0 bg-dark text-white px-2 py-1 small rounded-top">
+                        💰 @course.Price ₺
+                    </span>
+                </div>
+
+                <!-- 📄 Kurs Bilgileri -->
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title fw-bold">@course.Title</h5>
+                    <p class="text-muted small">@course.Description</p>
+                    <p><span class="badge bg-primary">👨‍🏫 @course.Instructor</span></p>
+
+                    <button class="btn btn-gradient-primary mt-auto add-to-cart"
+                            data-id="@course.Id"
+                            data-title="@course.Title"
+                            data-price="@course.Price">
+                        🛒 Sepete Ekle
+                    </button>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@section Styles {
+    <style>
+        .course-card {
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .course-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+        }
+        .btn-gradient-primary {
+            background: linear-gradient(90deg, #4e73df, #1cc88a);
+            color: #fff;
+            border: none;
+        }
+        .btn-gradient-primary:hover {
+            opacity: 0.9;
+        }
+        .sticky-top {
+            z-index: 1030;
+        }
+    </style>
+}
+
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet" />
+
+    <script>
+        $(document).ready(function () {
+            // 📌 Arama
+            $("#searchBox").on("keyup", function () {
+                var value = $(this).val().toLowerCase();
+                $(".course-card").filter(function () {
+                    $(this).toggle($(this).data("title").indexOf(value) > -1);
+                });
+            });
+
+            // 📌 Sıralama
+            $("#sortSelect").on("change", function () {
+                var sortType = $(this).val();
+                var courses = $(".course-card").toArray();
+
+                courses.sort(function (a, b) {
+                    var priceA = parseFloat($(a).data("price"));
+                    var priceB = parseFloat($(b).data("price"));
+                    return sortType === "asc" ? priceA - priceB : priceB - priceA;
+                });
+
+                $("#courseList").html(courses);
+            });
+
+            // 📌 Kategori Filtreleme
+            $("#categorySelect").on("change", function () {
+                var selected = $(this).val().toLowerCase();
+                $(".course-card").filter(function () {
+                    var courseCategory = ($(this).data("category") || "").toLowerCase();
+                    if (selected === "" || courseCategory.includes(selected)) {
+                        $(this).show();
+                    } else {
+                        $(this).hide();
+                    }
+                });
+            });
+
+            // 📌 Sepete ekleme
+            $(".add-to-cart").click(function () {
+                var id = $(this).data("id");
+                var title = $(this).data("title");
+                var price = $(this).data("price");
+
+                $.post("/Cart/Add", { id: id, title: title, price: price })
+                    .done(function () {
+                        toastr.success(title + " sepete eklendi!");
+                    })
+                    .fail(function () {
+                        toastr.error("Sepete eklenirken hata oluştu.");
+                    });
+            });
+        });
+    </script>
+}

@@ -1,0 +1,55 @@
+﻿@model List<UI.Customer.ViewModel.UserViewModel>
+
+<div class="container mt-5">
+    <h2 class="mb-4">👤 Kullanıcı Yönetimi</h2>
+
+    @if (TempData["Message"] != null)
+    {
+        <div class="alert alert-success">@TempData["Message"]</div>
+    }
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger">@TempData["Error"]</div>
+    }
+
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Ad</th>
+                <th>Email</th>
+                <th>Rol</th>
+                <th>İşlemler</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var user in Model)
+            {
+                <tr>
+                    <td>@user.Id</td>
+                    <td>@user.Name</td>
+                    <td>@user.Email</td>
+                    <td>@user.Role</td>
+                    <td>
+                        <a href="/Admin/UserCourses/@user.Id" class="btn btn-info btn-sm">🎓 Kursları Gör</a>
+
+                        @if (user.Role != "Admin")
+                        {
+                            <form asp-action="DeleteUser" asp-controller="Admin" method="post" style="display:inline;">
+                                <input type="hidden" name="id" value="@user.Id" />
+                                <button type="submit" class="btn btn-danger btn-sm"
+                                        onclick="return confirm('Bu kullanıcıyı silmek istediğinize emin misiniz?');">
+                                    🗑 Sil
+                                </button>
+                            </form>
+                        }
+                        else
+                        {
+                            <span class="text-muted">❌ Silinemez</span>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

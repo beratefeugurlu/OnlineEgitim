@@ -1,0 +1,81 @@
+﻿@model OnlineEgitim.UI.Customer.ViewModels.AdminDashboardViewModel
+
+@{
+    ViewData["Title"] = "Admin Dashboard";
+}
+
+<h2 class="text-center my-4">📊 Admin Dashboard</h2>
+
+<div class="row text-center mb-4">
+    <div class="col-md-3">
+        <div class="card bg-primary text-white shadow">
+            <div class="card-body">
+                👥 Kullanıcı Sayısı
+                <h3>@Model.TotalUsers</h3>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card bg-success text-white shadow">
+            <div class="card-body">
+                📚 Kurs Sayısı
+                <h3>@Model.TotalCourses</h3>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card bg-warning text-dark shadow">
+            <div class="card-body">
+                💳 Satın Alınan
+                <h3>@Model.PurchasedCount</h3>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card bg-danger text-white shadow">
+            <div class="card-body">
+                ⏳ Bekleyen Onay
+                <h3>@Model.PendingApprovals</h3>
+            </div>
+        </div>
+    </div>
+</div>
+
+<h3>👥 Kullanıcı Listesi</h3>
+
+@if (Model.Users != null && Model.Users.Any())
+{
+    <table class="table table-bordered table-striped">
+        <thead class="table-dark">
+            <tr>
+                <th>ID</th>
+                <th>Ad Soyad</th>
+                <th>Email</th>
+                <th>Rol</th>
+                <th>İşlemler</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var user in Model.Users)
+            {
+                <tr>
+                    <td>@user.Id</td>
+                    <td>@user.Name</td>
+                    <td>@user.Email</td>
+                    <td>@user.Role</td>
+                    <td>
+                        <form asp-action="DeleteUser" asp-controller="Admin" method="post" style="display:inline">
+                            <input type="hidden" name="id" value="@user.Id" />
+                            <button type="submit" class="btn btn-danger btn-sm">🗑 Sil</button>
+                        </form>
+                        <a asp-action="UserCourses" asp-route-id="@user.Id" class="btn btn-info btn-sm">📚 Kurslar</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p class="text-muted">Henüz kullanıcı bulunamadı.</p>
+}

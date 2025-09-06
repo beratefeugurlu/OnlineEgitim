@@ -1,0 +1,120 @@
+﻿@model IEnumerable<dynamic>
+@{
+    ViewData["Title"] = "Admin Dashboard";
+}
+
+<div class="container mt-5">
+    <h2 class="mb-4 text-primary">📊 Admin Paneli - Ders Yönetimi</h2>
+
+    <!-- İstatistik Kartları -->
+    <div class="row mb-4">
+        <div class="col-md-4">
+            <div class="card text-white bg-primary shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">📚 Toplam Ders</h5>
+                    <h3>@ViewBag.TotalCourses</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card text-white bg-success shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">✅ Onaylı Dersler</h5>
+                    <h3>@ViewBag.ApprovedCourses</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card text-dark bg-warning shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">⏳ Bekleyen Dersler</h5>
+                    <h3>@ViewBag.PendingCourses</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Grafik -->
+    <div class="row mb-5">
+        <div class="col-md-6 offset-md-3">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title text-center">📊 Kurs Durumu Dağılımı</h5>
+                    <canvas id="courseChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @if (TempData["Message"] != null)
+    {
+        <div class="alert alert-info">@TempData["Message"]</div>
+    }
+
+    <!-- Ders Tablosu -->
+    <table class="table table-hover table-bordered align-middle shadow-sm">
+        <thead class="table-dark text-center">
+            <tr>
+                <th>#</th>
+                <th>Ders Adı</th>
+                <th>Eğitmen</th>
+                <th>Fiyat</th>
+                <th>Durum</th>
+                <th>İşlemler</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var course in Model)
+            {
+                <tr>
+                    <td class="text-center">@course.Id</td>
+                    <td>@course.Title</td>
+                    <td>@course.Instructor</td>
+                    <td>@course.Price ₺</td>
+                    <td class="text-center">
+                        @if (course.IsApproved)
+                        {
+                            <span class="badge bg-success">Onaylı</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-warning text-dark">Bekliyor</span>
+                        }
+                    </td>
+                    <td class="text-center">
+                        @if (!course.IsApproved)
+                        {
+                            <a href="/Admin/Approve/@course.Id" class="btn btn-sm btn-success me-1">✅ Onayla</a>
+                        }
+                        <a href="/Admin/Delete/@course.Id" class="btn btn-sm btn-danger">🗑 Sil</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    var ctx = document.getElementById('courseChart').getContext('2d');
+    var courseChart = new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: ['Onaylı', 'Bekleyen'],
+            datasets: [{
+                data: [@ViewBag.ApprovedCourses, @ViewBag.PendingCourses],
+                backgroundColor: ['#28a745', '#ffc107']
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'bottom'
+                }
+            }
+        }
+    });
+</script>
+

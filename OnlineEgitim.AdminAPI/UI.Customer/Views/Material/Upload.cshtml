@@ -1,0 +1,26 @@
+﻿@{
+    ViewData["Title"] = "Doküman / Video Yükle";
+}
+
+<div class="container mt-5" style="max-width:500px;">
+    <h3 class="mb-4">📤 Doküman / Video Yükle</h3>
+
+    @if (ViewBag.Error != null)
+    {
+        <div class="alert alert-danger">@ViewBag.Error</div>
+    }
+
+    @if (ViewBag.Message != null)
+    {
+        <div class="alert alert-success">@ViewBag.Message</div>
+    }
+
+    <form method="post" enctype="multipart/form-data" asp-action="Upload" asp-controller="Material">
+        <div class="mb-3">
+            <label class="form-label">Dosya Seç (PDF, PPT, MP4 vb.)</label>
+            <input type="file" class="form-control" name="file" required />
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100">Yükle</button>
+    </form>
+</div>

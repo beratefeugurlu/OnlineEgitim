@@ -1,0 +1,55 @@
+﻿@model IEnumerable<dynamic>
+@{
+    ViewData["Title"] = "Yüklenen Doküman & Videolar";
+}
+
+<div class="container mt-5">
+    <h3 class="mb-4">📂 Yüklenen Doküman & Videolar</h3>
+
+    @if (TempData["Message"] != null)
+    {
+        <div class="alert alert-info">@TempData["Message"]</div>
+    }
+
+    <table class="table table-bordered table-striped">
+        <thead class="table-dark">
+            <tr>
+                <th>#</th>
+                <th>Dosya Adı</th>
+                <th>Durum</th>
+                <th>Önizleme / İndir</th>
+                <th>İşlemler</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var file in Model)
+            {
+                <tr>
+                    <td>@file.Id</td>
+                    <td>@file.FileName</td>
+                    <td>
+                        @if (file.IsApproved)
+                        {
+                            <span class="badge bg-success">Onaylı</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-warning">Bekliyor</span>
+                        }
+                    </td>
+                    <td>
+                        <a href="@file.Path" target="_blank" class="btn btn-sm btn-info">Görüntüle</a>
+                        <a href="@file.Path" download class="btn btn-sm btn-secondary">İndir</a>
+                    </td>
+                    <td>
+                        @if (!file.IsApproved)
+                        {
+                            <a href="/Material/Approve/@file.Id" class="btn btn-sm btn-success">Onayla</a>
+                        }
+                        <a href="/Material/Delete/@file.Id" class="btn btn-sm btn-danger">Sil</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

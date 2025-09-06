@@ -1,0 +1,53 @@
+﻿@using UI.Customer.ViewModel
+@model List<PurchasedCourseViewModel>
+
+@{
+    ViewData["Title"] = "Profilim";
+}
+
+<div class="container mt-5">
+    <h2 class="mb-4">👤 @ViewBag.UserName - Profilim</h2>
+    <p class="text-muted">Rol: @ViewBag.Role</p>
+
+    @if (Model == null || !Model.Any())
+    {
+        <div class="alert alert-info">Henüz satın alınmış kursunuz bulunmamaktadır.</div>
+    }
+    else
+    {
+        <div class="row">
+            @foreach (var course in Model)
+            {
+                <div class="col-md-4 mb-3">
+                    <div class="card h-100 shadow-sm">
+
+                        <!-- 🖼️ Kurs resmi -->
+                        @if (!string.IsNullOrEmpty(course.ImagePath))
+                        {
+                            <img src="@course.ImagePath"
+                                 class="card-img-top" alt="Kurs Görseli" />
+                        }
+                        else
+                        {
+                            <img src="https://picsum.photos/300/200?random=@Guid.NewGuid()"
+                                 class="card-img-top" alt="Kurs Görseli" />
+                        }
+
+                        <div class="card-body">
+                            <h5 class="card-title">@course.CourseTitle</h5>
+                            <p><strong>@course.CoursePrice ₺</strong></p>
+                            <p class="text-muted">
+                                Satın Alma Tarihi: @course.PurchaseDate.ToString("dd.MM.yyyy")
+                            </p>
+                            <p>
+                                <small class="text-secondary">
+                                    👤 @course.UserName - @course.UserEmail
+                                </small>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>

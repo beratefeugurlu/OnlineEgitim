@@ -1,0 +1,26 @@
+﻿@{
+    ViewData["Title"] = "Yeni Ders Ekle";
+}
+
+<div class="container mt-5" style="max-width:500px;">
+    <h3 class="mb-4">📘 Yeni Ders Ekle</h3>
+
+    @if (TempData["Message"] != null)
+    {
+        <div class="alert alert-success">@TempData["Message"]</div>
+    }
+
+    <form method="post" asp-action="Add" asp-controller="Course">
+        <div class="mb-3">
+            <label class="form-label">Ders Adı</label>
+            <input type="text" class="form-control" name="title" required />
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Fiyat (₺)</label>
+            <input type="number" class="form-control" name="price" step="0.01" required />
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100">Dersi Ekle</button>
+    </form>
+</div>

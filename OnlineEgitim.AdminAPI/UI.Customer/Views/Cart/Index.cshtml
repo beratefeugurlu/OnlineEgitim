@@ -1,0 +1,85 @@
+﻿@model List<UI.Customer.Models.Course>
+
+<h2 class="mb-4">🛒 Sepetim</h2>
+
+@if (Model == null || !Model.Any())
+{
+    <div class="alert alert-info">Sepetinizde ürün bulunmamaktadır.</div>
+}
+else
+{
+    <div class="row" id="cartContainer">
+        @foreach (var course in Model)
+        {
+            <div class="col-md-4 mb-4" data-id="@course.Id">
+                <div class="card h-100 shadow-sm">
+                    <!-- 📌 Kurs resmi -->
+                    @if (!string.IsNullOrEmpty(course.ImagePath))
+                    {
+                        <img src="@course.ImagePath" class="card-img-top" alt="@course.Title" />
+                    }
+                    else
+                    {
+                        <img src="https://picsum.photos/300/200?random=@Guid.NewGuid()" class="card-img-top" alt="@course.Title" />
+                    }
+
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">@course.Title</h5>
+                        <p class="text-muted">👨‍🏫 @course.Instructor</p>
+                        <p class="fw-bold fs-5">@course.Price ₺</p>
+
+                        <button type="button" class="btn btn-danger mt-auto remove-btn"
+                                data-id="@course.Id"
+                                data-title="@course.Title">
+                            ❌ Kaldır
+                        </button>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    <!-- 📌 Toplam fiyat -->
+    <div class="d-flex justify-content-between align-items-center mt-4">
+        <h4>Toplam: <strong id="totalPrice">@Model.Sum(c => c.Price) ₺</strong></h4>
+        <form asp-controller="Payment" asp-action="Index" method="get">
+            <button type="submit" class="btn btn-success btn-lg">
+                ✅ Satın Al
+            </button>
+        </form>
+    </div>
+}
+
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet" />
+
+    <script>
+        $(document).ready(function () {
+            $(".remove-btn").click(function () {
+                var id = $(this).data("id");
+                var title = $(this).data("title");
+
+                $.post("/Cart/Remove", { id: id })
+                    .done(function () {
+                        toastr.success(title + " sepetten kaldırıldı!");
+
+                        // kartı DOM'dan kaldır
+                        $("div[data-id='" + id + "']").remove();
+
+                        // toplam fiyatı güncelle
+                        var total = 0;
+                        $("#cartContainer .card").each(function () {
+                            var priceText = $(this).find(".fw-bold").text().replace("₺", "").trim();
+                            total += parseFloat(priceText);
+                        });
+                        $("#totalPrice").text(total + " ₺");
+                    })
+                    .fail(function () {
+                        toastr.error("Ürün kaldırılamadı!");
+                    });
+            });
+        });
+    </script>
+}

@@ -1,0 +1,36 @@
+﻿@model List<UI.Customer.ViewModel.PurchasedCourseViewModel>
+
+<div class="container mt-5">
+    <h2 class="mb-4">📚 Kullanıcının Satın Aldığı Kurslar</h2>
+
+    @if (Model == null || !Model.Any())
+    {
+        <div class="alert alert-info">Bu kullanıcı henüz kurs satın almamış.</div>
+    }
+    else
+    {
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Kullanıcı</th>
+                    <th>Email</th>
+                    <th>Kurs</th>
+                    <th>Fiyat</th>
+                    <th>Satın Alma Tarihi</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var course in Model)
+                {
+                    <tr>
+                        <td>@course.UserName</td>
+                        <td>@course.UserEmail</td>
+                        <td>@course.CourseTitle</td>
+                        <td>@course.CoursePrice ₺</td>
+                        <td>@course.PurchaseDate.ToString("dd.MM.yyyy HH:mm")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>

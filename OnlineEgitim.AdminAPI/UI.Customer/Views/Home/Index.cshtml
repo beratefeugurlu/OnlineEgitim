@@ -1,0 +1,115 @@
+﻿@{
+    ViewData["Title"] = "EduTube - Ana Sayfa";
+}
+
+<style>
+    /* 🔹 Animasyonlu arka plan */
+    body {
+        background: linear-gradient(-45deg, #ff5722, #ff9800, #2196f3, #4caf50);
+        background-size: 400% 400%;
+        animation: gradientBG 12s ease infinite;
+    }
+
+    @@keyframes gradientBG {
+        0% {
+            background-position: 0% 50%;
+        }
+
+        50% {
+            background-position: 100% 50%;
+        }
+
+        100% {
+            background-position: 0% 50%;
+        }
+    }
+
+    .hero {
+        min-height: 80vh;
+        display: flex;
+        align-items: center;
+        color: white;
+    }
+
+        .hero h1 {
+            font-size: 3rem;
+            font-weight: bold;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+        }
+
+    .card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+        }
+</style>
+
+<div class="container mt-3">
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            ✅ @TempData["Success"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+</div>
+
+<div class="container hero">
+    <!-- Hero Section -->
+    <div class="row align-items-center">
+        <div class="col-md-6">
+            <h1 class="display-4 fw-bold">📚 Learn · Share · Grow</h1>
+            <p class="lead mt-3">
+                EduTube, modern dünyada <strong>öğrenmeyi kolaylaştıran</strong> ve
+                <strong>bilgiyi paylaşmayı teşvik eden</strong> online eğitim platformudur.
+            </p>
+            <div class="mt-4">
+                <a href="/Course/Index" class="btn btn-lg btn-light me-2">🚀 Kurslara Göz At</a>
+                @if (!User.Identity.IsAuthenticated)
+                {
+                    <a href="/Account/Register" class="btn btn-lg btn-outline-light">📝 Hemen Kayıt Ol</a>
+                }
+            </div>
+        </div>
+        <div class="col-md-6 text-center">
+            <img src="~/images/education-hero.jpg" alt="EduTube Hero" class="img-fluid rounded shadow-lg" />
+        </div>
+    </div>
+</div>
+
+<!-- Özellikler Bölümü -->
+<div class="container mt-5">
+    <div class="row text-center">
+        <div class="col-md-4 mb-3">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-body">
+                    <h3 class="text-primary">👩‍🏫 Uzman Eğitmenler</h3>
+                    <p>Alanında uzman eğitmenlerden kaliteli ders içerikleri.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-3">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-body">
+                    <h3 class="text-success">🌍 Her Yerden Erişim</h3>
+                    <p>İstediğin zaman, istediğin yerden öğrenmeye devam et.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-3">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-body">
+                    <h3 class="text-warning">🎯 Hedefine Ulaş</h3>
+                    <p>Hayallerine bir adım daha yaklaşmak için hemen başla.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

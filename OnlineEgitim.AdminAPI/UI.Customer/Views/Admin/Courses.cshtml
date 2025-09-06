@@ -1,0 +1,127 @@
+﻿@model List<UI.Customer.Models.Course>
+
+
+<h2>Kurslar</h2>
+
+<div class="mb-3 d-flex justify-content-between">
+    <!-- 🔍 Arama Kutusu -->
+    <input type="text" id="searchBox" class="form-control w-50" placeholder="Kurs ara...">
+
+    <div class="d-flex gap-2 w-50">
+        <!-- 📊 Sıralama Dropdown -->
+        <select id="sortSelect" class="form-select">
+            <option value="">Sıralama Seç</option>
+            <option value="asc">Fiyat (En Ucuz → En Pahalı)</option>
+            <option value="desc">Fiyat (En Pahalı → En Ucuz)</option>
+        </select>
+
+        <!-- 🏷️ Kategori Dropdown -->
+        <select id="categoryFilter" class="form-select">
+            <option value="">Kategori Seç</option>
+            @foreach (var kategori in Model.Select(c => c.Description).Distinct())
+            {
+                <option value="@kategori">@kategori</option>
+            }
+        </select>
+
+        <!-- 👨‍🏫 Eğitmen Dropdown -->
+        <select id="instructorFilter" class="form-select">
+            <option value="">Eğitmen Seç</option>
+            @foreach (var egitmen in Model.Select(c => c.Instructor).Distinct())
+            {
+                <option value="@egitmen">@egitmen</option>
+            }
+        </select>
+    </div>
+</div>
+
+<div class="row" id="courseList">
+    @foreach (var course in Model)
+    {
+        <div class="col-md-4 mb-3 course-card"
+             data-title="@course.Title.ToLower()"
+             data-price="@course.Price"
+             data-category="@course.Description"
+             data-instructor="@course.Instructor">
+            <div class="card p-3 h-100">
+                <h5 class="card-title">@course.Title</h5>
+                <p class="card-text">@course.Description</p>
+                <p><strong>@course.Price ₺</strong></p>
+                <p><span class="badge bg-secondary">@course.Instructor</span></p>
+
+                <!-- Sepete ekleme butonu -->
+                <button class="btn btn-primary add-to-cart"
+                        data-id="@course.Id"
+                        data-title="@course.Title"
+                        data-price="@course.Price">
+                    Sepete Ekle
+                </button>
+            </div>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet" />
+
+    <script>
+        $(document).ready(function () {
+            function filterCourses() {
+                var searchValue = $("#searchBox").val().toLowerCase();
+                var sortType = $("#sortSelect").val();
+                var selectedCategory = $("#categoryFilter").val().toLowerCase();
+                var selectedInstructor = $("#instructorFilter").val().toLowerCase();
+
+                $(".course-card").each(function () {
+                    var card = $(this);
+                    var title = card.data("title");
+                    var category = card.data("category").toLowerCase();
+                    var instructor = card.data("instructor").toLowerCase();
+
+                    var matchTitle = title.indexOf(searchValue) > -1;
+                    var matchCategory = selectedCategory === "" || category === selectedCategory;
+                    var matchInstructor = selectedInstructor === "" || instructor === selectedInstructor;
+
+                    if (matchTitle && matchCategory && matchInstructor) {
+                        card.show();
+                    } else {
+                        card.hide();
+                    }
+                });
+
+                // 📌 Sıralama
+                if (sortType !== "") {
+                    var courses = $(".course-card:visible").toArray();
+
+                    courses.sort(function (a, b) {
+                        var priceA = parseFloat($(a).data("price"));
+                        var priceB = parseFloat($(b).data("price"));
+                        return sortType === "asc" ? priceA - priceB : priceB - priceA;
+                    });
+
+                    $("#courseList").html(courses);
+                }
+            }
+
+            // Event bağlama
+            $("#searchBox, #sortSelect, #categoryFilter, #instructorFilter").on("input change", filterCourses);
+
+            // 📌 Sepete ekleme
+            $(".add-to-cart").click(function () {
+                var id = $(this).data("id");
+                var title = $(this).data("title");
+                var price = $(this).data("price");
+
+                $.post("/Cart/Add", { id: id, title: title, price: price })
+                    .done(function () {
+                        toastr.success(title + " sepete eklendi!");
+                    })
+                    .fail(function () {
+                        toastr.error("Sepete eklenirken hata oluştu.");
+                    });
+            });
+        });
+    </script>
+}
