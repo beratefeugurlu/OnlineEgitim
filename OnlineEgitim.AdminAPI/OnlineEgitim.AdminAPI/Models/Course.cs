@@ -21,16 +21,17 @@ public class Course
     [MaxLength(1000)]
     public string Description { get; set; } = string.Empty;
 
-    // ✅ Admin onayı
     public bool IsApproved { get; set; } = false;
 
-    // ✅ Kurs görseli yolu
+    // Kurs görseli yolu
     [MaxLength(300)]
     public string? ImagePath { get; set; }
 
-    // OrderItem ilişkisi
+    // OrderItem ilişkisi.
     public ICollection<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
 
-    // ✅ Kursu satın alan kullanıcılar
+    //  Kursu satın alan kullanıcılar listesi
     public ICollection<PurchasedCourse> PurchasedCourses { get; set; } = new List<PurchasedCourse>();
+
+    public DateTime CreatedDate { get; set; } = DateTime.Now;
 }

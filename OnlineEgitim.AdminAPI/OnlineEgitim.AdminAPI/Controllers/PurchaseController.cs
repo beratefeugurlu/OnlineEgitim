@@ -16,7 +16,7 @@ namespace OnlineEgitim.AdminAPI.Controllers
             _context = context;
         }
 
-        // ✅ Kurs satın alma işlemi
+        //  Kurs satın alma işlemi
         [HttpPost("Buy")]
         public async Task<IActionResult> Buy([FromBody] PurchaseRequest request)
         {
@@ -38,7 +38,7 @@ namespace OnlineEgitim.AdminAPI.Controllers
             return Ok(new { success = true, message = "Satın alma başarılı" });
         }
 
-        // ✅ Tüm satın alınan kurslar (Admin için)
+        //  Tüm satın alınan kurslar (Admin panelindde)
         [HttpGet("All")]
         public async Task<IActionResult> GetAll()
         {
@@ -61,7 +61,7 @@ namespace OnlineEgitim.AdminAPI.Controllers
             return Ok(purchases);
         }
 
-        // ✅ Belirli kullanıcının satın aldığı kurslar
+        //  Kullanıcı bazlı satın alınan kurslar
         [HttpGet("User/{userId}")]
         public async Task<IActionResult> GetByUser(int userId)
         {

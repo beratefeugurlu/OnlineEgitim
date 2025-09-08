@@ -7,7 +7,9 @@ using UI.Customer.Models;
 
 namespace UI.Customer.Controllers
 {
-    [Authorize] // sadece giriş yapan kullanıcı ödeme yapabilsin
+    [Authorize] 
+    
+    // sadece giriş yapan kullanıcı ödeme yapabilcek onu saglıyo 
     public class PaymentController : Controller
     {
         private readonly HttpClient _httpClient;
@@ -27,7 +29,6 @@ namespace UI.Customer.Controllers
                 return RedirectToAction("Login", "Account");
             }
 
-            // Sepet session’dan alınır
             var cart = HttpContext.Session.GetObjectFromJson<List<Course>>("Cart") ?? new List<Course>();
             return View(cart);
         }
@@ -42,7 +43,7 @@ namespace UI.Customer.Controllers
                 return RedirectToAction("Login", "Account");
             }
 
-            // Sepeti getir
+            
             var cart = HttpContext.Session.GetObjectFromJson<List<Course>>("Cart") ?? new List<Course>();
             if (!cart.Any())
             {
@@ -52,7 +53,7 @@ namespace UI.Customer.Controllers
 
             var courseIds = cart.Select(c => c.Id).ToList();
 
-            // AdminAPI'ye gönder
+           
             var request = new
             {
                 Email = email,

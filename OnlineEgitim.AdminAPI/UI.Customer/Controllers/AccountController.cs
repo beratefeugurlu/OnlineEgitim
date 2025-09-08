@@ -18,7 +18,7 @@ namespace UI.Customer.Controllers
             _httpClient.BaseAddress = new Uri("https://localhost:7279/api/");
         }
 
-        // ✅ Login GET
+    
         public IActionResult Login(string returnUrl = null)
         {
             if (User.Identity?.IsAuthenticated == true)
@@ -30,7 +30,6 @@ namespace UI.Customer.Controllers
             return View();
         }
 
-        // ✅ Login POST
         [HttpPost]
         public async Task<IActionResult> Login(string email, string password)
         {
@@ -45,7 +44,6 @@ namespace UI.Customer.Controllers
                 return RedirectToAction("Login");
             }
 
-            // Token al
             var tokenResponse = await response.Content.ReadAsStringAsync();
             string token;
             try
@@ -58,10 +56,10 @@ namespace UI.Customer.Controllers
                 token = tokenResponse; // fallback
             }
 
-            // Rol belirle
+         
             string role = email.ToLower().Contains("admin") ? "Admin" : "Student";
 
-            // Claims oluştur
+         
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.Name, email),
@@ -75,7 +73,7 @@ namespace UI.Customer.Controllers
                 CookieAuthenticationDefaults.AuthenticationScheme,
                 new ClaimsPrincipal(claimsIdentity));
 
-            // ✅ Aktif kullanıcı listesine ekle (eğer zaten yoksa)
+           
             if (!ActiveUsers.Users.Contains(email))
                 ActiveUsers.Users.Add(email);
 
@@ -88,7 +86,7 @@ namespace UI.Customer.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        // ✅ Register GET
+
         public IActionResult Register()
         {
             if (User.Identity?.IsAuthenticated == true)
@@ -99,7 +97,7 @@ namespace UI.Customer.Controllers
             return View();
         }
 
-        // ✅ Register POST
+   
         [HttpPost]
         public async Task<IActionResult> Register(string name, string email, string password)
         {
@@ -118,7 +116,7 @@ namespace UI.Customer.Controllers
             return RedirectToAction("Register");
         }
 
-        // ✅ Logout
+        // Logout işlemi    
         public async Task<IActionResult> Logout()
         {
             if (User.Identity?.IsAuthenticated == true)
@@ -136,7 +134,7 @@ namespace UI.Customer.Controllers
             return RedirectToAction("Login");
         }
 
-        // ✅ Access Denied
+        
         public IActionResult AccessDenied()
         {
             return View();

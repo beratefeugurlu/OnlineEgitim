@@ -1,14 +1,14 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-#nullable disable
+
 
 namespace OnlineEgitim.AdminAPI.Migrations
 {
-    /// <inheritdoc />
+   
     public partial class AddCategoryToCourse : Migration
     {
-        /// <inheritdoc />
+       
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             
@@ -51,7 +51,7 @@ namespace OnlineEgitim.AdminAPI.Migrations
                 column: "UserId");
         }
 
-        /// <inheritdoc />
+       
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(

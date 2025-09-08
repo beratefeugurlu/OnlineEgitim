@@ -4,15 +4,14 @@ namespace UI.Admin.Controllers
 {
     public class AccountController : Controller
     {
-        // Admin giriş ekranı olmayacak, Customer UI yönlendirecek
+        // adminin ozel login sayfası yok , ortak bir login sisstemi bulunuyor
         public IActionResult Login(string returnUrl = "/Admin/Dashboard")
         {
             if (User.Identity != null && User.Identity.IsAuthenticated)
             {
                 return Redirect(returnUrl);
             }
-
-            // Customer UI login sayfasına yönlendir
+            
             return Redirect("https://localhost:7045/Account/Login?returnUrl=" + returnUrl);
         }
 

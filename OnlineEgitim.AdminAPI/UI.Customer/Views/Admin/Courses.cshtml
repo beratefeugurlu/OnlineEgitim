@@ -91,7 +91,6 @@
                     }
                 });
 
-                // 📌 Sıralama
                 if (sortType !== "") {
                     var courses = $(".course-card:visible").toArray();
 
@@ -105,10 +104,10 @@
                 }
             }
 
-            // Event bağlama
+          
             $("#searchBox, #sortSelect, #categoryFilter, #instructorFilter").on("input change", filterCourses);
 
-            // 📌 Sepete ekleme
+            
             $(".add-to-cart").click(function () {
                 var id = $(this).data("id");
                 var title = $(this).data("title");

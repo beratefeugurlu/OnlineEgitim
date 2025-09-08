@@ -8,6 +8,6 @@ public class User
     public string PasswordHash { get; set; }
     public string Role { get; set; }
 
-    // ✅ Kullanıcının satın aldığı kurslar
+    //  Kullanıcının satın aldığıkurslar
     public ICollection<PurchasedCourse> PurchasedCourses { get; set; } = new List<PurchasedCourse>();
 }

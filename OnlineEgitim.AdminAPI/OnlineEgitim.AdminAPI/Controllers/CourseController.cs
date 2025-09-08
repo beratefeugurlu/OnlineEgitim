@@ -16,7 +16,7 @@ namespace OnlineEgitim.AdminAPI.Controllers
             _context = context;
         }
 
-        // ✅ Tüm kursları getir
+        // Tüm kursları getircek
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
@@ -33,7 +33,7 @@ namespace OnlineEgitim.AdminAPI.Controllers
             return Ok(courses);
         }
 
-        // ✅ ID’ye göre kurs getir
+        // ID’ye göre kurs getircek
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
@@ -46,28 +46,31 @@ namespace OnlineEgitim.AdminAPI.Controllers
             return Ok(course);
         }
 
-        // ✅ Yeni kurs ekle
+        // Yeni kurs ekleme
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] Course model)
         {
-            if (model == null)
+            if (model == null || !ModelState.IsValid)
                 return BadRequest("Geçersiz kurs bilgisi!");
 
-            // Eğer resim boş ise random resim ata
+            
+            model.CreatedDate = DateTime.Now;
+
+            // resim kısmı boşsa rastgele resim gelecek ???
             if (string.IsNullOrEmpty(model.ImagePath))
                 model.ImagePath = $"https://picsum.photos/300/200?random={Guid.NewGuid()}";
 
-            // Admin eklediği için direkt onaylı gelsin
+            
             model.IsApproved = true;
 
             _context.Courses.Add(model);
             await _context.SaveChangesAsync();
 
-            // ✅ Kurs başarıyla eklendi, geri döndür
+            
             return CreatedAtAction(nameof(GetById), new { id = model.Id }, model);
         }
 
-        // ✅ Kurs güncelle
+        //  Kurs güncelleme
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id, [FromBody] Course updatedCourse)
         {
@@ -89,7 +92,7 @@ namespace OnlineEgitim.AdminAPI.Controllers
             return Ok(course);
         }
 
-        // ✅ Kurs sil
+        //  Kurs silmee
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {

@@ -21,7 +21,7 @@ namespace OnlineEgitim.AdminAPI.Services
 
         public async Task<PaymentResponse> ProcessPaymentAsync(PaymentRequest request)
         {
-            // 🔹 Dummy kontrol → sadece bu kart numarası kabul ediliyor
+            // fake odeme doğrulama
             if (request.CardNumber != "1111222233334444")
             {
                 return new PaymentResponse
@@ -31,7 +31,7 @@ namespace OnlineEgitim.AdminAPI.Services
                 };
             }
 
-            // ✅ Sipariş oluştur
+            
             var order = new Order
             {
                 UserId = request.UserId,
@@ -41,7 +41,7 @@ namespace OnlineEgitim.AdminAPI.Services
             await _orderRepository.AddAsync(order);
             await _orderRepository.SaveChangesAsync();
 
-            // ✅ Kurs fiyatlarını DB’den çekerek siparişe ekle
+            //  Kurs fiyatlarını DB’den çekerek siparişe ekleme_____
             foreach (var courseId in request.CourseIds)
             {
                 var course = await _courseRepository.GetByIdAsync(courseId);
@@ -53,7 +53,7 @@ namespace OnlineEgitim.AdminAPI.Services
                         OrderId = order.Id,
                         CourseId = course.Id,
                         Quantity = 1,
-                        Price = course.Price // 🎯 gerçek fiyat buradan geliyor
+                        Price = course.Price 
                     };
 
                     await _orderItemRepository.AddAsync(orderItem);

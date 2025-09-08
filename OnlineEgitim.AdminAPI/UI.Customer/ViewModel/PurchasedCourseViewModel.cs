@@ -11,7 +11,7 @@ namespace UI.Customer.ViewModel
         public decimal CoursePrice { get; set; }
         public DateTime PurchaseDate { get; set; }
 
-        // ✅ Görsel yolu
+      
         public string? ImagePath { get; set; }
     }
 }

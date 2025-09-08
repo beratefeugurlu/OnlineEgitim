@@ -26,14 +26,14 @@ namespace UI.Customer.Controllers
             HttpContext.Session.SetObjectAsJson(CartSessionKey, cart);
         }
 
-        // 📌 Sepeti görüntüle
+        //  Sepeti görüntüleme
         public IActionResult Index()
         {
-            var cart = GetCart(); // ✅ Session’dan sepeti alıyoruz
-            return View(cart);    // List<Course> döndürüyoruz
+            var cart = GetCart(); 
+            return View(cart);   
         }
 
-        // 📌 Sepete ekle (Ajax uyumlu hale getirildi)
+        //  Sepete ekle.  Ajax uyumlu hale getirildi
         [HttpPost]
         public IActionResult Add(int id, string title, decimal price)
         {
@@ -54,7 +54,7 @@ namespace UI.Customer.Controllers
             return Ok(new { success = true, message = $"{title} sepete eklendi!" });
         }
 
-        // 📌 Sepetten kaldır
+        //  Sepetten kaldırma islemleri.
         [HttpPost]
         public IActionResult Remove(int id)
         {
@@ -69,7 +69,7 @@ namespace UI.Customer.Controllers
             return Ok(new { success = true, message = "Ürün sepetten kaldırıldı!" });
         }
 
-        // 📌 Sepeti temizle
+      
         [HttpPost]
         public IActionResult Clear()
         {

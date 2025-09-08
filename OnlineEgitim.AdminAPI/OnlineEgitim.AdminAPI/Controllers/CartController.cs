@@ -15,7 +15,7 @@ namespace OnlineEgitim.AdminAPI.Controllers
             _cartRepository = cartRepository;
         }
 
-        // GET: api/Cart
+        
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
@@ -23,7 +23,7 @@ namespace OnlineEgitim.AdminAPI.Controllers
             return Ok(carts);
         }
 
-        // GET: api/Cart/5
+        
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
@@ -32,7 +32,7 @@ namespace OnlineEgitim.AdminAPI.Controllers
             return Ok(cart);
         }
 
-        // POST: api/Cart
+        
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] Cart cart)
         {
@@ -41,7 +41,7 @@ namespace OnlineEgitim.AdminAPI.Controllers
             return CreatedAtAction(nameof(GetById), new { id = cart.Id }, cart);
         }
 
-        // PUT: api/Cart/5
+        
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id, [FromBody] Cart updatedCart)
         {
@@ -58,7 +58,7 @@ namespace OnlineEgitim.AdminAPI.Controllers
             return NoContent();
         }
 
-        // DELETE: api/Cart/5
+       
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {

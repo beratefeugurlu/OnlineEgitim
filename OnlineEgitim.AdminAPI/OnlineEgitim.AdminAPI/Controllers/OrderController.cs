@@ -25,7 +25,7 @@ namespace OnlineEgitim.AdminAPI.Controllers
             _userRepository = userRepository;
         }
 
-        // Kullanıcının satın aldığı kursları getir
+        
         [HttpGet("User/{userId}")]
         public async Task<IActionResult> GetOrdersByUser(int userId)
         {

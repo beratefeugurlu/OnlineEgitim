@@ -13,7 +13,7 @@ namespace OnlineEgitim.AdminAPI.Services
 
         public TokenService(IOptions<JwtSettings> jwtSettings)
         {
-            _jwtSettings = jwtSettings.Value; // ✅ buradan alıyoruz
+            _jwtSettings = jwtSettings.Value; 
         }
 
         public string GenerateToken(string username, string role)

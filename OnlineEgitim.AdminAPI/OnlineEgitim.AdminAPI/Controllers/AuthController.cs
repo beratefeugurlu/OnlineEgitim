@@ -2,8 +2,8 @@
 using OnlineEgitim.AdminAPI.Services;
 using OnlineEgitim.AdminAPI.Data;
 using OnlineEgitim.AdminAPI.Models;
-using System.Linq; // ✅ LINQ için
-using BCrypt.Net; // ✅ BCrypt için
+using System.Linq; //  LINQ için
+using BCrypt.Net; // BCrypt içni
 
 namespace OnlineEgitim.AdminAPI.Controllers
 {
@@ -20,14 +20,14 @@ namespace OnlineEgitim.AdminAPI.Controllers
             _context = context;
         }
 
-        // ✅ Kayıt
+        // duplicate email kontrolü 
         [HttpPost("register")]
         public IActionResult Register([FromBody] RegisterRequest request)
         {
             if (_context.Users.Any(u => u.Email.ToLower() == request.Email.ToLower()))
                 return BadRequest(new { message = "Bu email zaten kayıtlı!" });
 
-            // Şifreyi BCrypt ile hashle
+            // Şifreyi hashleme
             var passwordHash = BCrypt.Net.BCrypt.HashPassword(request.Password);
 
             var user = new User
@@ -41,7 +41,7 @@ namespace OnlineEgitim.AdminAPI.Controllers
             _context.Users.Add(user);
             _context.SaveChanges();
 
-            // ✅ JSON response
+            
             return Ok(new
             {
                 message = "Kayıt başarılı! 🎉",
@@ -49,14 +49,14 @@ namespace OnlineEgitim.AdminAPI.Controllers
             });
         }
 
-        // ✅ Giriş
+        // kayıtlı kullanıcının kontrolü
         [HttpPost("login")]
         public IActionResult Login([FromBody] LoginRequest request)
         {
             var user = _context.Users.FirstOrDefault(u => u.Email == request.Email);
             if (user == null) return Unauthorized(new { message = "Kullanıcı bulunamadı!" });
 
-            // Şifreyi hash karşılaştırması (BCrypt)
+            // Şifreyi hash karşılaştırması 
             bool isPasswordValid = BCrypt.Net.BCrypt.Verify(request.Password, user.PasswordHash);
 
             if (!isPasswordValid)
@@ -66,7 +66,7 @@ namespace OnlineEgitim.AdminAPI.Controllers
             return Ok(new { token = token, role = user.Role, name = user.Name, id = user.Id });
         }
 
-        // ✅ Email'e göre kullanıcı getir (ProfileController için)
+        
         [HttpGet("GetUserByEmail")]
         public IActionResult GetUserByEmail(string email)
         {
@@ -80,7 +80,7 @@ namespace OnlineEgitim.AdminAPI.Controllers
         }
     }
 
-    // ✅ DTO'lar
+    //  DTO'lar
     public class LoginRequest
     {
         public required string Email { get; set; }

@@ -6,7 +6,7 @@ namespace UI.Admin.Controllers
     [Authorize(Roles = "Admin")] // sadece Admin girebilir
     public class AdminController : Controller
     {
-        // Dummy ders listesi (ileride API'den gelecek)
+        // su an projemde 2 rol bulunmakta 3. bir rol de ekleyip guncellemeyi planlıyoryum ama aldıgım hatalardan dolayı erteledim
         private static List<dynamic> courses = new List<dynamic>
         {
             new { Id = 1, Title = "C# ile Backend Geliştirme", Instructor = "Efe Hoca", Price = 250, IsApproved = false },
@@ -23,7 +23,7 @@ namespace UI.Admin.Controllers
             return View(courses.OrderBy(c => c.Id));
         }
 
-        // Ders Onaylama
+  
         public IActionResult Approve(int id)
         {
             var course = courses.FirstOrDefault(c => c.Id == id);
@@ -36,7 +36,7 @@ namespace UI.Admin.Controllers
             return RedirectToAction("Dashboard");
         }
 
-        // Ders Silme
+   
         public IActionResult Delete(int id)
         {
             var course = courses.FirstOrDefault(c => c.Id == id);

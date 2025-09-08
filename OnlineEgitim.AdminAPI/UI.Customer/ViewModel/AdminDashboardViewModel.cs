@@ -9,7 +9,6 @@ namespace OnlineEgitim.UI.Customer.ViewModels
         public int PurchasedCount { get; set; }
         public int PendingApprovals { get; set; }
 
-        // ✅ Doğru model referansı
         public List<User> Users { get; set; } = new();
     }
 }

@@ -24,7 +24,7 @@ namespace UI.Customer.Controllers
                 return View(new List<PurchasedCourseViewModel>());
             }
 
-            // 🔹 Kullanıcı bilgilerini getir
+            //  Kullanıcı bilgilerini getirme
             var userResponse = await _httpClient.GetAsync($"api/Auth/GetUserByEmail?email={email}");
             if (!userResponse.IsSuccessStatusCode)
             {
@@ -50,14 +50,14 @@ namespace UI.Customer.Controllers
 
             if (role == "Admin")
             {
-                // Admin → tüm kursları görür
+                
                 var courseResponse = await _httpClient.GetAsync("api/Course");
                 if (courseResponse.IsSuccessStatusCode)
                 {
                     var json = await courseResponse.Content.ReadAsStringAsync();
                     var allCourses = JsonConvert.DeserializeObject<List<PurchasedCourseViewModel>>(json) ?? new List<PurchasedCourseViewModel>();
 
-                    // fallback resim
+                    // yedek resim atama
                     foreach (var c in allCourses)
                     {
                         if (string.IsNullOrEmpty(c.ImagePath))
@@ -69,7 +69,7 @@ namespace UI.Customer.Controllers
             }
             else
             {
-                // Öğrenci → sadece satın aldıkları
+                // Öğrencinin satın aldığı kurslar
                 var purchasedResponse = await _httpClient.GetAsync($"api/Purchase/User/{userId}");
                 if (purchasedResponse.IsSuccessStatusCode)
                 {

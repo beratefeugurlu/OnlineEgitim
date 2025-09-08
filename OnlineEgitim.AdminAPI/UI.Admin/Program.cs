@@ -3,8 +3,6 @@
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllersWithViews();
-
-// 🔹 Cookie Authentication (Admin UI de aynı cookie'yi kullansın)
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
     {
@@ -28,7 +26,7 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
-// Default route → Admin Dashboard
+
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Admin}/{action=Dashboard}/{id?}");

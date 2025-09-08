@@ -14,7 +14,7 @@ namespace UI.Customer.Controllers
             _httpClient = httpClientFactory.CreateClient("AdminApi");
         }
 
-        // 🔓 Herkes kursları görebilir
+        //  Herkes kursları görebilcek
         [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
@@ -39,7 +39,7 @@ namespace UI.Customer.Controllers
         }
 
 
-        // 🔒 Instructor veya Admin kurs ekleyebilir
+        //  Instructor????veya Admin kurs ekleyebilir
         [Authorize(Roles = "Instructor,Admin")]
         public IActionResult Add()
         {

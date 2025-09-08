@@ -30,7 +30,7 @@ namespace UI.Customer.Controllers
             var purchases = JsonConvert.DeserializeObject<List<PurchasedCourseViewModel>>(json)
                             ?? new List<PurchasedCourseViewModel>();
 
-            // ✅ Eksik alan kontrolü (boşsa fallback atıyoruz)
+            
             foreach (var p in purchases)
             {
                 if (string.IsNullOrEmpty(p.ImagePath))

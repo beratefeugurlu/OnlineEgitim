@@ -16,7 +16,7 @@ namespace OnlineEgitim.AdminAPI.Controllers
             _context = context;
         }
 
-        // GET: api/users
+        
         [HttpGet]
         public IActionResult GetAllUsers()
         {
@@ -24,7 +24,7 @@ namespace OnlineEgitim.AdminAPI.Controllers
             return Ok(users);
         }
 
-        // GET: api/users/5
+        
         [HttpGet("{id}")]
         public IActionResult GetUser(int id)
         {
@@ -33,7 +33,7 @@ namespace OnlineEgitim.AdminAPI.Controllers
             return Ok(user);
         }
 
-        // ✅ DELETE: api/users/5
+        
         [HttpDelete("{id}")]
         public IActionResult DeleteUser(int id)
         {

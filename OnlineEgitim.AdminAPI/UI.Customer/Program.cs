@@ -1,12 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
-using OnlineEgitim.AdminAPI.Data; // ✅ AppDbContext erişimi için eklendi
+using OnlineEgitim.AdminAPI.Data; // AppDbContext e
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllersWithViews();
 
-// ✅ HttpClient (AdminAPI çağrıları için) → appsettings.json’dan BaseUrl okunuyor, yoksa default port
 builder.Services.AddHttpClient("AdminApi", client =>
 {
     var apiUrl = builder.Configuration["ApiSettings:BaseUrl"];
@@ -19,11 +18,10 @@ builder.Services.AddHttpClient("AdminApi", client =>
     client.BaseAddress = new Uri(apiUrl);
 });
 
-// ✅ DbContext ekleme
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// ✅ Session
+
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession(options =>
 {
@@ -32,7 +30,7 @@ builder.Services.AddSession(options =>
     options.Cookie.IsEssential = true;
 });
 
-// ✅ Cookie Authentication
+
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
     {
@@ -40,7 +38,7 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
         options.AccessDeniedPath = "/Account/AccessDenied";
     });
 
-// IConfiguration injection
+
 builder.Services.AddSingleton<IConfiguration>(builder.Configuration);
 
 var app = builder.Build();
@@ -56,13 +54,12 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-// ✅ Session aktif
+
 app.UseSession();
 
 app.UseAuthentication();
 app.UseAuthorization();
 
-// Default route → Home/Index
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
