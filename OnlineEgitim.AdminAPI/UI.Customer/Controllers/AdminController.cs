@@ -122,12 +122,12 @@ namespace UI.Customer.Controllers
         [HttpGet]
         public IActionResult AddCourse()
         {
-            return View(new Course()); // ✅ Doğru model gönderiliyor
+            return View(new UI.Customer.Models.Course()); // ✅ Doğru model gönderiliyor
         }
 
         // ➕ Kurs ekleme işlemi (POST)
         [HttpPost]
-        public async Task<IActionResult> AddCourse(Course course)
+        public async Task<IActionResult> AddCourse(UI.Customer.Models.Course course)
         {
             if (!ModelState.IsValid)
             {
@@ -154,5 +154,40 @@ namespace UI.Customer.Controllers
             TempData["Error"] = "❌ Kurs eklenirken hata oluştu.";
             return View(course);
         }
+
+        // 🎓 Kursları listele
+        [HttpGet]
+        public async Task<IActionResult> ManageCourses()
+        {
+            var response = await _httpClient.GetAsync("api/Course");
+            var courses = new List<UI.Customer.Models.Course>();
+
+            if (response.IsSuccessStatusCode)
+            {
+                var json = await response.Content.ReadAsStringAsync();
+                courses = JsonConvert.DeserializeObject<List<UI.Customer.Models.Course>>(json)
+                  ?? new List<UI.Customer.Models.Course>();
+            }
+
+            return View(courses);
+        }
+
+        // ❌ Kurs silme
+        [HttpPost]
+        public async Task<IActionResult> DeleteCourse(int id)
+        {
+            var response = await _httpClient.DeleteAsync($"api/Course/{id}");
+            if (response.IsSuccessStatusCode)
+            {
+                TempData["Message"] = "✅ Kurs başarıyla silindi.";
+            }
+            else
+            {
+                TempData["Error"] = "❌ Kurs silinemedi.";
+            }
+
+            return RedirectToAction("ManageCourses");
+        }
+
     }
 }

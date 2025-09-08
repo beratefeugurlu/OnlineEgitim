@@ -9,5 +9,7 @@
         public string Instructor { get; set; } = string.Empty;
         public bool IsApproved { get; set; }
         public string? ImagePath { get; set; }
+
+        public DateTime CreatedDate { get; set; } = DateTime.Now;
     }
 }

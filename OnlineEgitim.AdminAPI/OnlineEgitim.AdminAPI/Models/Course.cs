@@ -33,4 +33,6 @@ public class Course
 
     // ✅ Kursu satın alan kullanıcılar
     public ICollection<PurchasedCourse> PurchasedCourses { get; set; } = new List<PurchasedCourse>();
+
+    public DateTime CreatedDate { get; set; } = DateTime.Now;
 }

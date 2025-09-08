@@ -1,0 +1,46 @@
+﻿@model List<UI.Customer.Models.Course>
+
+@{
+    ViewData["Title"] = "Kurs Yönetimi";
+}
+
+<div class="container mt-5">
+    <h2 class="mb-4">📚 Kurs Yönetimi</h2>
+
+    @if (TempData["Message"] != null)
+    {
+        <div class="alert alert-success">@TempData["Message"]</div>
+    }
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger">@TempData["Error"]</div>
+    }
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Başlık</th>
+                <th>Eğitmen</th>
+                <th>Fiyat</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var course in Model)
+            {
+                <tr>
+                    <td>@course.Title</td>
+                    <td>@course.Instructor</td>
+                    <td>@course.Price ₺</td>
+                    <td>
+                        <form asp-action="DeleteCourse" asp-controller="Admin" method="post"
+                              onsubmit="return confirm('Bu kursu silmek istediğinize emin misiniz?');">
+                            <input type="hidden" name="id" value="@course.Id" />
+                            <button type="submit" class="btn btn-danger btn-sm">Sil</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

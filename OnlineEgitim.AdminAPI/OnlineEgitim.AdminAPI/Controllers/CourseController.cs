@@ -50,8 +50,11 @@ namespace OnlineEgitim.AdminAPI.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] Course model)
         {
-            if (model == null)
+            if (model == null || !ModelState.IsValid)
                 return BadRequest("Geçersiz kurs bilgisi!");
+
+            // Tarih otomatik
+            model.CreatedDate = DateTime.Now;
 
             // Eğer resim boş ise random resim ata
             if (string.IsNullOrEmpty(model.ImagePath))
@@ -63,7 +66,7 @@ namespace OnlineEgitim.AdminAPI.Controllers
             _context.Courses.Add(model);
             await _context.SaveChangesAsync();
 
-            // ✅ Kurs başarıyla eklendi, geri döndür
+            // ✅ Kurs başarıyla eklendi
             return CreatedAtAction(nameof(GetById), new { id = model.Id }, model);
         }
 
