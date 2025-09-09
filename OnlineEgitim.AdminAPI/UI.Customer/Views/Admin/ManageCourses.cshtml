@@ -25,34 +25,35 @@
     {
         <table class="table table-bordered table-striped table-hover shadow-sm">
             <thead class="table-dark">
-                <tr>
+            <tr>
                     <th>ID</th>
-                    <th>Başlık</th>
+                <th>Başlık</th>
                     <th>Fiyat</th>
-                    <th>Eğitmen</th>
+                <th>Eğitmen</th>
                     <th style="width:120px;">İşlemler</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var course in Model)
-                {
-                    <tr>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var course in Model)
+            {
+                <tr>
                         <td>@course.Id</td>
-                        <td>@course.Title</td>
+                    <td>@course.Title</td>
                         <td>@course.Price ₺</td>
-                        <td>@course.Instructor</td>
-                        <td>
+                    <td>@course.Instructor</td>
+                    <td>@course.Price ₺</td>
+                    <td>
                             <form asp-action="DeleteCourse" asp-controller="Admin" method="post" style="display:inline;">
-                                <input type="hidden" name="id" value="@course.Id" />
+                            <input type="hidden" name="id" value="@course.Id" />
                                 <button type="submit" class="btn btn-danger btn-sm"
                                         onclick="return confirm('Bu kursu silmek istediğinize emin misiniz?');">
                                     ❌ Sil
                                 </button>
-                            </form>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
     }
 </div>

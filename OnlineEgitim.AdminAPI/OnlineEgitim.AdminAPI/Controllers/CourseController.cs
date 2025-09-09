@@ -53,6 +53,9 @@ namespace OnlineEgitim.AdminAPI.Controllers
             if (model == null || !ModelState.IsValid)
                 return BadRequest("Geçersiz kurs bilgisi!");
 
+            // Tarih otomatik
+            model.CreatedDate = DateTime.Now;
+
             // Eğer resim boş ise random resim ata
             if (string.IsNullOrEmpty(model.ImagePath))
                 model.ImagePath = $"https://picsum.photos/300/200?random={Guid.NewGuid()}";
@@ -63,7 +66,7 @@ namespace OnlineEgitim.AdminAPI.Controllers
             _context.Courses.Add(model);
             await _context.SaveChangesAsync();
 
-            // ✅ Kurs başarıyla eklendi, geri döndür
+            // ✅ Kurs başarıyla eklendi
             return CreatedAtAction(nameof(GetById), new { id = model.Id }, model);
         }
 
