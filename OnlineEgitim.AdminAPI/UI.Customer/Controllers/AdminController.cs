@@ -153,40 +153,5 @@ namespace UI.Customer.Controllers
             TempData["Error"] = "❌ Kurs eklenirken hata oluştu.";
             return View(course);
         }
-
-        // Kursları listeleme
-        [HttpGet]
-        public async Task<IActionResult> ManageCourses()
-        {
-            var response = await _httpClient.GetAsync("api/Course");
-            var courses = new List<UI.Customer.Models.Course>();
-
-            if (response.IsSuccessStatusCode)
-            {
-                var json = await response.Content.ReadAsStringAsync();
-                courses = JsonConvert.DeserializeObject<List<UI.Customer.Models.Course>>(json)
-                  ?? new List<UI.Customer.Models.Course>();
-            }
-
-            return View(courses);
-        }
-
-        //  Kurs silme
-        [HttpPost]
-        public async Task<IActionResult> DeleteCourse(int id)
-        {
-            var response = await _httpClient.DeleteAsync($"api/Course/{id}");
-            if (response.IsSuccessStatusCode)
-            {
-                TempData["Message"] = "✅ Kurs başarıyla silindi.";
-            }
-            else
-            {
-                TempData["Error"] = "❌ Kurs silinemedi.";
-            }
-
-            return RedirectToAction("ManageCourses");
-        }
-
     }
 }
