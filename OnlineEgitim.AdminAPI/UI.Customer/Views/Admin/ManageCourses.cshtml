@@ -5,8 +5,9 @@
 }
 
 <div class="container mt-5">
-    <h2 class="mb-4">📚 Kurs Yönetimi</h2>
+    <h2 class="mb-4 text-center">📚 Kurs Yönetimi</h2>
 
+    @* ✅ Başarılı / Hata mesajlarını gösterelim *@
     @if (TempData["Message"] != null)
     {
         <div class="alert alert-success">@TempData["Message"]</div>
@@ -16,31 +17,42 @@
         <div class="alert alert-danger">@TempData["Error"]</div>
     }
 
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>Başlık</th>
-                <th>Eğitmen</th>
-                <th>Fiyat</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var course in Model)
-            {
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info text-center">Henüz kurs bulunmamaktadır.</div>
+    }
+    else
+    {
+        <table class="table table-bordered table-striped table-hover shadow-sm">
+            <thead class="table-dark">
                 <tr>
-                    <td>@course.Title</td>
-                    <td>@course.Instructor</td>
-                    <td>@course.Price ₺</td>
-                    <td>
-                        <form asp-action="DeleteCourse" asp-controller="Admin" method="post"
-                              onsubmit="return confirm('Bu kursu silmek istediğinize emin misiniz?');">
-                            <input type="hidden" name="id" value="@course.Id" />
-                            <button type="submit" class="btn btn-danger btn-sm">Sil</button>
-                        </form>
-                    </td>
+                    <th>ID</th>
+                    <th>Başlık</th>
+                    <th>Fiyat</th>
+                    <th>Eğitmen</th>
+                    <th style="width:120px;">İşlemler</th>
                 </tr>
-            }
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @foreach (var course in Model)
+                {
+                    <tr>
+                        <td>@course.Id</td>
+                        <td>@course.Title</td>
+                        <td>@course.Price ₺</td>
+                        <td>@course.Instructor</td>
+                        <td>
+                            <form asp-action="DeleteCourse" asp-controller="Admin" method="post" style="display:inline;">
+                                <input type="hidden" name="id" value="@course.Id" />
+                                <button type="submit" class="btn btn-danger btn-sm"
+                                        onclick="return confirm('Bu kursu silmek istediğinize emin misiniz?');">
+                                    ❌ Sil
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
 </div>

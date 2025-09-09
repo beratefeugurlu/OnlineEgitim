@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using OnlineEgitim.UI.Customer.ViewModels;
 using System.Text;
-using UI.Customer.Models;  
+using UI.Customer.Models;
 using UI.Customer.ViewModel;
 
 namespace UI.Customer.Controllers
@@ -18,7 +18,7 @@ namespace UI.Customer.Controllers
             _httpClient = httpClientFactory.CreateClient("AdminApi");
         }
 
-        //  Dashboard
+        // 📊 Dashboard
         public async Task<IActionResult> Dashboard()
         {
             int totalUsers = 0;
@@ -40,7 +40,7 @@ namespace UI.Customer.Controllers
             if (courseResponse.IsSuccessStatusCode)
             {
                 var json = await courseResponse.Content.ReadAsStringAsync();
-                var courses = JsonConvert.DeserializeObject<List<Course>>(json);
+                var courses = JsonConvert.DeserializeObject<List<UI.Customer.Models.Course>>(json);
                 totalCourses = courses?.Count ?? 0;
             }
 
@@ -65,7 +65,7 @@ namespace UI.Customer.Controllers
             return View(vm);
         }
 
-        // Kullanıcı listesi
+        // 👥 Kullanıcı listesi
         public async Task<IActionResult> Users()
         {
             var response = await _httpClient.GetAsync("api/Users");
@@ -87,7 +87,7 @@ namespace UI.Customer.Controllers
             return View(model);
         }
 
-        // Kullanıcı sil
+        // ❌ Kullanıcı sil
         [HttpPost]
         public async Task<IActionResult> DeleteUser(int id)
         {
@@ -104,7 +104,7 @@ namespace UI.Customer.Controllers
             return RedirectToAction("Users");
         }
 
-        // Kullanıcının satın aldığı kurslar
+        // 🎓 Kullanıcının satın aldığı kurslar
         public async Task<IActionResult> UserCourses(int id)
         {
             var response = await _httpClient.GetAsync($"api/Purchase/User/{id}");
@@ -118,13 +118,14 @@ namespace UI.Customer.Controllers
             return View(purchasedCourses);
         }
 
-      
+        // ➕ Kurs ekleme sayfası (GET)
         [HttpGet]
         public IActionResult AddCourse()
         {
-            return View(new UI.Customer.Models.Course()); // ✅ Doğru model gönderiliyor
+            return View(new UI.Customer.Models.Course());
         }
 
+        // ➕ Kurs ekleme işlemi (POST)
         [HttpPost]
         public async Task<IActionResult> AddCourse(UI.Customer.Models.Course course)
         {
@@ -133,7 +134,6 @@ namespace UI.Customer.Controllers
                 return View(course);
             }
 
-            // Eğer resim boşsa random ekle ???
             if (string.IsNullOrEmpty(course.ImagePath))
             {
                 course.ImagePath = $"https://picsum.photos/300/200?random={Guid.NewGuid()}";
@@ -147,11 +147,45 @@ namespace UI.Customer.Controllers
             if (response.IsSuccessStatusCode)
             {
                 TempData["Message"] = "✅ Kurs başarıyla eklendi.";
-                return RedirectToAction("Index", "Course"); // Courses sayfasına yönlendirme
+                return RedirectToAction("Index", "Course");
             }
 
             TempData["Error"] = "❌ Kurs eklenirken hata oluştu.";
             return View(course);
+        }
+
+        // 📚 Kurs Yönetimi Sayfası (Listeleme)
+        [HttpGet]
+        public async Task<IActionResult> ManageCourses()
+        {
+            var response = await _httpClient.GetAsync("api/Course");
+            if (!response.IsSuccessStatusCode)
+            {
+                TempData["Error"] = "❌ Kurslar yüklenemedi.";
+                return View(new List<UI.Customer.Models.Course>());
+            }
+
+            var json = await response.Content.ReadAsStringAsync();
+            var courses = JsonConvert.DeserializeObject<List<UI.Customer.Models.Course>>(json) ?? new List<UI.Customer.Models.Course>();
+
+            return View(courses);
+        }
+
+        // ❌ Kurs silme
+        [HttpPost]
+        public async Task<IActionResult> DeleteCourse(int id)
+        {
+            var response = await _httpClient.DeleteAsync($"api/Course/{id}");
+            if (response.IsSuccessStatusCode)
+            {
+                TempData["Message"] = "✅ Kurs başarıyla silindi.";
+            }
+            else
+            {
+                TempData["Error"] = "❌ Kurs silinirken hata oluştu.";
+            }
+
+            return RedirectToAction("ManageCourses");
         }
     }
 }
